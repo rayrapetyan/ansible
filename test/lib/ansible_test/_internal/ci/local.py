@@ -164,7 +164,7 @@ class InvalidBranch(ApplicationError):
 
 class LocalChanges:
     """Change information for local work."""
-    def __init__(self, args):  # type: (CommonConfig) -> None
+    def __init__(self, args):  # type: (TestConfig) -> None
         self.args = args
         self.git = Git()
 
@@ -203,9 +203,11 @@ class LocalChanges:
         # diff of all tracked files from fork point to working copy
         self.diff = self.git.get_diff([self.fork_point])
 
-    @staticmethod
-    def is_official_branch(name):  # type: (str) -> bool
+    def is_official_branch(self, name):  # type: (str) -> bool
         """Return True if the given branch name an official branch for development or releases."""
+        if self.args.base_branch:
+            return name == self.args.base_branch
+
         if name == 'devel':
             return True
 

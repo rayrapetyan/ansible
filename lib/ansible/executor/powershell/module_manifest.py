@@ -142,7 +142,7 @@ class PSModuleDepFinder(object):
         if name in self.exec_scripts.keys():
             return
 
-        data = pkgutil.get_data("ansible.executor.powershell", name + ".ps1")
+        data = pkgutil.get_data("ansible.executor.powershell", to_native(name + ".ps1"))
         if data is None:
             raise AnsibleError("Could not find executor powershell script "
                                "for '%s'" % name)
@@ -340,8 +340,8 @@ def _create_powershell_wrapper(b_module_data, module_path, module_args,
         finder.scan_exec_script('coverage_wrapper')
         coverage_manifest['output'] = coverage_output
 
-        coverage_whitelist = C.config.get_config_value('COVERAGE_REMOTE_WHITELIST', variables=task_vars)
-        coverage_manifest['whitelist'] = coverage_whitelist
+        coverage_enabled = C.config.get_config_value('COVERAGE_REMOTE_PATHS', variables=task_vars)
+        coverage_manifest['path_filter'] = coverage_enabled
 
     # make sure Ansible.ModuleUtils.AddType is added if any C# utils are used
     if len(finder.cs_utils_wrapper) > 0 or len(finder.cs_utils_module) > 0:

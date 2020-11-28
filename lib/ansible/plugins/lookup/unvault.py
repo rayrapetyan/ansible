@@ -4,8 +4,8 @@ from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
 DOCUMENTATION = """
-    lookup: unvault
-    author: ansible core team
+    name: unvault
+    author: Ansible Core Team
     version_added: "2.10"
     short_description: read vaulted file(s) contents
     description:
@@ -19,13 +19,15 @@ DOCUMENTATION = """
 """
 
 EXAMPLES = """
-- debug: msg="the value of foo.txt is {{lookup('vault', '/etc/foo.txt')|to_string }}"
+- debug: msg="the value of foo.txt is {{lookup('unvault', '/etc/foo.txt')|to_string }}"
 """
 
 RETURN = """
   _raw:
     description:
       - content of file(s) as bytes
+    type: list
+    elements: raw
 """
 
 from ansible.errors import AnsibleParserError
